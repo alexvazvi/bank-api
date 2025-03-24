@@ -7,6 +7,9 @@ import {
   InsufficientFundsException,
   NegativeAmountException,
 } from '../domain/exceptions';
+import { WalletId } from '../domain/walletid.vo';
+import { Money } from '../domain/money.vo';
+import { OwnerId } from '../domain/ownerid.vo';
 
 @Injectable()
 export class WalletService {
@@ -20,7 +23,11 @@ export class WalletService {
     initialBalance: number = 0,
   ): Promise<Wallet> {
     try {
-      const wallet = new Wallet(uuidv4(), initialBalance, owner);
+      const wallet = new Wallet(
+        new WalletId(uuidv4()),
+        new Money(initialBalance),
+        new OwnerId(owner),
+      );
       await this.walletRepository.save(wallet);
       return wallet;
     } catch (error) {
@@ -50,7 +57,7 @@ export class WalletService {
   async deposit(walletId: string, amount: number): Promise<Wallet> {
     try {
       const wallet = await this.getWalletById(walletId);
-      wallet.deposit(amount);
+      wallet.deposit(new Money(amount));
       await this.walletRepository.save(wallet);
       return wallet;
     } catch (error) {
@@ -71,7 +78,7 @@ export class WalletService {
   async withdraw(walletId: string, amount: number): Promise<Wallet> {
     try {
       const wallet = await this.getWalletById(walletId);
-      wallet.withdraw(amount);
+      wallet.deposit(new Money(amount));
       await this.walletRepository.save(wallet);
       return wallet;
     } catch (error) {

@@ -44,9 +44,9 @@ export class WalletResponseDto {
 
   static fromDomain(wallet: Wallet): WalletResponseDto {
     return new WalletResponseDto(
-      wallet.getId(),
-      wallet.getOwner(),
-      wallet.getBalance(),
+      wallet.getId().getValue(),
+      wallet.getOwner().getValue(),
+      wallet.getBalance().getAmount(),
       wallet.getCreatedAt(),
     );
   }

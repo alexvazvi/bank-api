@@ -2,32 +2,36 @@ import {
   InsufficientFundsException,
   NegativeAmountException,
 } from './exceptions';
+import { WalletId } from './walletid.vo';
+import { Money } from './money.vo';
+import { OwnerId } from './ownerid.vo';
 
 export class Wallet {
+  private readonly id: WalletId;
+  private balance: Money;
+  private readonly owner: OwnerId;
+  private readonly createdAt: Date;
   constructor(
-    private readonly id: string,
-    private balance: number,
-    private readonly owner: string,
-    private readonly createdAt: Date = new Date(),
+    id: WalletId,
+    balance: Money,
+    owner: OwnerId,
+    createdAt: Date = new Date(),
   ) {
-    this.validateBalance(balance);
+    this.id = id;
+    this.balance = balance;
+    this.owner = owner;
+    this.createdAt = createdAt;
   }
 
-  private validateBalance(balance: number): void {
-    if (balance < 0) {
-      throw new NegativeAmountException();
-    }
-  }
-
-  getId(): string {
+  getId(): WalletId {
     return this.id;
   }
 
-  getBalance(): number {
+  getBalance(): Money {
     return this.balance;
   }
 
-  getOwner(): string {
+  getOwner(): OwnerId {
     return this.owner;
   }
 
@@ -35,20 +39,22 @@ export class Wallet {
     return this.createdAt;
   }
 
-  deposit(amount: number): void {
-    if (amount <= 0) {
+  deposit(amount: Money): void {
+    if (amount.getAmount() <= 0) {
       throw new NegativeAmountException();
     }
-    this.balance += amount;
+    this.balance = this.balance.add(amount);
   }
 
-  withdraw(amount: number): void {
-    if (amount <= 0) {
+  withdraw(amount: Money): void {
+    if (amount.getAmount() <= 0) {
       throw new NegativeAmountException();
     }
-    if (amount > this.balance) {
+
+    if (!this.balance.isGreaterThanOrEqual(amount)) {
       throw new InsufficientFundsException();
     }
-    this.balance -= amount;
+
+    this.balance = this.balance.subtract(amount);
   }
 }

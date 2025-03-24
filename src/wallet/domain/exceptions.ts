@@ -39,4 +39,3 @@ export class InvalidOwnerIdException extends Error {
     this.name = 'InvalidOwnerIdException';
   }
 }
-

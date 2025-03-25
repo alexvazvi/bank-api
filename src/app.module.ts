@@ -7,7 +7,7 @@ import { WalletTypeormEntity } from './wallet/infrastructure/persistence/wallet-
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'db',
       port: 5432,
       username: 'postgres',
       password: 'postgres',

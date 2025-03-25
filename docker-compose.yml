@@ -21,12 +21,17 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
-      - DATABASE_NAME=bank
+      - NODE_ENV=${NODE_ENV:-development}
+      - DATABASE_HOST=${DATABASE_HOST:-db}
+      - DATABASE_PORT=${DATABASE_PORT:-5432}
+      - DATABASE_USER=${DATABASE_USER:-postgres}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD:-postgres}
+      - DATABASE_NAME=${DATABASE_NAME:-bank}
+      - SWAGGER_TITLE=${SWAGGER_TITLE:-Bank API}
+      - SWAGGER_DESCRIPTION=${SWAGGER_DESCRIPTION:-API for managing bank wallets}
+      - SWAGGER_VERSION=${SWAGGER_VERSION:-1.0}
+      - SWAGGER_PATH=${SWAGGER_PATH:-api}
+      - LOG_LEVEL=${LOG_LEVEL:-debug}
     depends_on:
       - db
     volumes:

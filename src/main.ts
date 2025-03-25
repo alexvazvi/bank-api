@@ -15,17 +15,23 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Bank API')
-    .setDescription('API BANK')
-    .setVersion('1.0')
+    .setTitle(process.env.SWAGGER_TITLE || 'Bank API-')
+    .setDescription(process.env.SWAGGER_DESCRIPTION || 'API BANK-')
+    .setVersion(process.env.SWAGGER_VERSION || '1.0')
     .addTag('wallets')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  await app.listen(3000);
-}
+  SwaggerModule.setup(process.env.SWAGGER_PATH || 'api', app, document);
 
+  // Use PORT from environment variables or default to 3000
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`Application is running on: http://localhost:${port}`);
+  console.log(
+    `Swagger documentation is available at: http://localhost:${port}/${process.env.SWAGGER_PATH || 'api'}`,
+  );
+}
 // Handle the Promise returned by bootstrap()
 bootstrap().catch((error) => {
   console.error('An error occurred during bootstrap:', error);

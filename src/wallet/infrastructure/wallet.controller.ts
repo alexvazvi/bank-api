@@ -33,20 +33,20 @@ export class WalletController {
   constructor(private readonly walletService: WalletService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear una nueva wallet' })
+  @ApiOperation({ summary: 'Create a new wallet' })
   @ApiBody({ type: CreateWalletDto })
   @ApiResponse({
     status: 201,
-    description: 'Wallet creada correctamente',
+    description: 'Wallet created successfully',
     type: WalletResponseDto,
   })
   @ApiResponse({
     status: 400,
-    description: 'Error de validación o cantidad negativa',
+    description: 'Validation error or negative amount',
   })
   @ApiResponse({
     status: 500,
-    description: 'Error interno del servidor',
+    description: 'Internal server error',
   })
   async createWallet(@Body() createWalletDto: CreateWalletDto) {
     try {
@@ -74,20 +74,20 @@ export class WalletController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtener una wallet por su ID' })
-  @ApiParam({ name: 'id', description: 'ID de la wallet a buscar' })
+  @ApiOperation({ summary: 'Get a wallet by its ID' })
+  @ApiParam({ name: 'id', description: 'ID of the wallet to find' })
   @ApiResponse({
     status: 200,
-    description: 'Wallet encontrada',
+    description: 'Wallet found',
     type: WalletResponseDto,
   })
   @ApiResponse({
     status: 404,
-    description: 'Wallet no encontrada',
+    description: 'Wallet not found',
   })
   @ApiResponse({
     status: 500,
-    description: 'Error interno del servidor',
+    description: 'Internal server error',
   })
   async getWallet(@Param('id') id: string) {
     try {
@@ -105,15 +105,15 @@ export class WalletController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todas las wallets' })
+  @ApiOperation({ summary: 'Get all wallets' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de wallets',
+    description: 'List of wallets',
     type: [WalletResponseDto],
   })
   @ApiResponse({
     status: 500,
-    description: 'Error interno del servidor',
+    description: 'Internal server error',
   })
   async getAllWallets() {
     const wallets = await this.walletService.getAllWallets();
@@ -121,25 +121,25 @@ export class WalletController {
   }
 
   @Post(':id/deposit')
-  @ApiOperation({ summary: 'Depositar dinero en una wallet' })
-  @ApiParam({ name: 'id', description: 'ID de la wallet donde depositar' })
+  @ApiOperation({ summary: 'Deposit money into a wallet' })
+  @ApiParam({ name: 'id', description: 'ID of the wallet to deposit into' })
   @ApiBody({ type: DepositDto })
   @ApiResponse({
     status: 200,
-    description: 'Depósito realizado correctamente',
+    description: 'Deposit completed successfully',
     type: WalletResponseDto,
   })
   @ApiResponse({
     status: 400,
-    description: 'Cantidad negativa o inválida',
+    description: 'Negative or invalid amount',
   })
   @ApiResponse({
     status: 404,
-    description: 'Wallet no encontrada',
+    description: 'Wallet not found',
   })
   @ApiResponse({
     status: 500,
-    description: 'Error interno del servidor',
+    description: 'Internal server error',
   })
   async deposit(@Param('id') id: string, @Body() depositDto: DepositDto) {
     try {
@@ -160,25 +160,25 @@ export class WalletController {
   }
 
   @Post(':id/withdraw')
-  @ApiOperation({ summary: 'Retirar dinero de una wallet' })
-  @ApiParam({ name: 'id', description: 'ID de la wallet de donde retirar' })
+  @ApiOperation({ summary: 'Withdraw money from a wallet' })
+  @ApiParam({ name: 'id', description: 'ID of the wallet to withdraw from' })
   @ApiBody({ type: WithdrawDto })
   @ApiResponse({
     status: 200,
-    description: 'Retiro realizado correctamente',
+    description: 'Withdrawal completed successfully',
     type: WalletResponseDto,
   })
   @ApiResponse({
     status: 400,
-    description: 'Cantidad negativa, inválida o fondos insuficientes',
+    description: 'Negative amount, invalid amount, or insufficient funds',
   })
   @ApiResponse({
     status: 404,
-    description: 'Wallet no encontrada',
+    description: 'Wallet not found',
   })
   @ApiResponse({
     status: 500,
-    description: 'Error interno del servidor',
+    description: 'Internal server error',
   })
   async withdraw(@Param('id') id: string, @Body() withdrawDto: WithdrawDto) {
     try {
